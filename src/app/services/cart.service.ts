@@ -8,12 +8,15 @@ import { Training } from '../model/training.model';
 
 /**
  * Service dédié à la gestion du panier à l'aide du local storage qui contient à tout instant les éléments d'un panier
- * jusqu'à la validation de celui-ci qui provoquera la suppresion dans le LS du panier à l'exception du customer 
+ * jusqu'à la validation de celui-ci qui provoquera la suppresion dans le LS du panier à l'exception du customer
  */
-export class CartService {  
+export class CartService {
+  clear() {
+    throw new Error('Method not implemented.');
+  }
   private cart : Map<number,Training>;  // panier
 
-  constructor() {     
+  constructor() {
     // au démarrage du service, je récupère le contenu du local storage : commande en cours
     let cart = localStorage.getItem('cart');
     if(cart){  // le panier existe déjà
@@ -26,14 +29,14 @@ export class CartService {
    * Méthode qui ajoute une formation au panier puis ajoute le panier au local storage
    * @param training formation à ajouter
    */
-  addTraining(training: Training) { 
+  addTraining(training: Training) {
     this.cart.set(training.id,training);
     this.saveCart(); //à chaque fois que j'ajoute un élément au panier, je met à jour le local storage
   }
 
   /**
    * Méthode qui ajoute un client au Local storage, s'il existe déjà il est écrasé
-   * @param customer 
+   * @param customer
    */
   saveCustomer(customer : Customer) {
     localStorage.setItem('customer',JSON.stringify(customer));
@@ -48,7 +51,7 @@ export class CartService {
 
   /**
    * Méthode qui retire une formation au panier puis met à jour le LS
-   * @param training 
+   * @param training
    */
   removeTraining(training: Training) {
     this.cart.delete(training.id);
@@ -59,7 +62,7 @@ export class CartService {
    * Méthode qui renvoi le contenu du panier sous forme de tableau
    * @returns Training [] | undefined
    */
-  getCart() : Training [] | undefined {    
+  getCart() : Training [] | undefined {
     if(this.cart.size > 0)
     return Array.from(this.cart.values());
     else return undefined;
@@ -74,12 +77,12 @@ export class CartService {
     this.cart.forEach(training => {
       amount += training.price * training.quantity;
     });
-    return amount;    
+    return amount;
   }
 
   /**
    * Méthode qui renvoi le client à partir du LS s'il existe sinon une instance la classe Customer
-   * @return 
+   * @return
    */
   getCustomer() : Customer {
     let customer = localStorage.getItem('customer');
@@ -92,7 +95,7 @@ export class CartService {
    */
   clearLocalStorage() {
     this.cart.clear();
-    localStorage.setItem('cart','');    
+    localStorage.setItem('cart','');
   }
 
   /**
@@ -100,6 +103,6 @@ export class CartService {
    */
   sendOrderToLocaleStorage() {
     let order = { customer : this.getCustomer(), cart : this.getCart(), total : this.getAmount()};
-    localStorage.setItem('order',JSON.stringify(order));    
+    localStorage.setItem('order',JSON.stringify(order));
   }
 }

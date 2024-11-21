@@ -14,7 +14,11 @@ import { CartService } from 'src/app/services/cart.service';
  */
 export class OrderComponent implements OnInit {
   dateOrder : Date = new Date();
-  customer : Customer | undefined;
+  showModal = false;
+  modalTitle = 'Commande confirmée';
+  modalContent = 'Votre commande a bien été prise en compte, merci de nous avoir donné : ';
+  modalData : any;
+  customer: Customer | undefined;
   constructor(public cartService : CartService, private router : Router) { }
 
   ngOnInit(): void {
@@ -26,10 +30,14 @@ export class OrderComponent implements OnInit {
    * si user confirme alors l'appli est remise dans son état initial
    */
   onOrder(){
-    if(confirm("Aujourd'hui c'est gratuit, merci de votre visite :)")){
-        this.cartService.sendOrderToLocaleStorage();
-        this.cartService.clearLocalStorage();
-        this.router.navigateByUrl('');
-    }
+    this.modalData = this.cartService.getAmount();
+    this.showModal = true;
+  }
+
+  onModalClose() : void {
+    this.showModal = false;
+    this.cartService.clear();
+    this.router.navigateByUrl('');
+    console.log("Back to the future !")
   }
 }
