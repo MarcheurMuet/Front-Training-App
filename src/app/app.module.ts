@@ -10,6 +10,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { OrderComponent } from './components/order/order.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalOrderComponent } from './components/order/modal-order/modal-order.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     CartComponent,
     NotFoundComponent,
     CustomerComponent,
-    OrderComponent
+    OrderComponent,
+    ModalOrderComponent
   ],
   imports: [
     BrowserModule,
